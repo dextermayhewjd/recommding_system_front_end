@@ -1,0 +1,48 @@
+/* FeedBack.css */
+
+.feedback-container {
+  background-color: #e7f3fe;
+  border-radius: 10px;
+  padding: 20px;
+  width: 70%;
+  margin: 20px auto;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+}
+
+.feedback-container h2 {
+  color: #354458;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feedback-container select {
+  width: 100%;
+  height: 35px;
+  margin: 10px 0;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 1.1em;
+}
+
+.feedback-container button {
+  background-color: #6e3b3b;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px 0;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.feedback-container .result {
+  color: #6e3b3b;
+  margin-top: 20px;
+  font-size: 1.2em;
+  text-align: center;
+}
