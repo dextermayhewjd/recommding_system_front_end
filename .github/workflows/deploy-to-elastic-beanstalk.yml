@@ -68,7 +68,7 @@ jobs:
           aws s3 cp myapp.zip s3://elasticbeanstalk-eu-west-2-135439077495/qa_react_front_git_doc/myapp.zip
   
   deploy:
-    needs: build-docker-image-and-send-to-amazonS3
+    needs: prepare-and-upload-dockerrun-file
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
