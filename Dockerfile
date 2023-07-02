@@ -1,15 +1,24 @@
-# Specify a bse image 
+# Specify the base image 
+FROM node:latest as builder
 
-FROM node:latest
+# Create a working directory in the container
+WORKDIR /app
 
-# 在容器内部创建一个工作目录
-WORKDIR /user/front_end/app
-
-# 复制 package.json 和 package-lock.json 文件到容器中
+# Copy package.json and package-lock.json files into the container
 COPY package*.json ./
 
+# Install the dependencies
 RUN npm install
 
+# Copy the rest of your app's source code from your host to your image filesystem.
 COPY ./ ./
 
-CMD [ "npm", "start" ]
+# Build the app
+RUN npm run build
+
+
+# Runtime stage
+FROM nginx
+
+# Copy the build output to replace the default nginx contents.
+COPY --from=builder /app/build /usr/share/nginx/html
