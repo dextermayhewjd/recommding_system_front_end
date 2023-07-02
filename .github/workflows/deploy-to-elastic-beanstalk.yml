@@ -62,9 +62,9 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name qa_front_end_react \
-            --version-label test1 \
+            --version-label test2 \
             --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_react_front_git_doc/image.tar
           aws elasticbeanstalk update-environment \
             --application-name qa_front_end_react \
             --environment-name Qafrontendreact-env \
-            --version-label test1
+            --version-label test2
