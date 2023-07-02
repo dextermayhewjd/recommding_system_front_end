@@ -31,7 +31,11 @@ jobs:
 
       - name: Push Docker image to registry
         run: docker push ${{ secrets.DOCKER_USERNAME }}/qa_github_action_img:latest
-
+      
+      - name: Save Docker image as .tar file
+        run: |
+          docker save -o image.tar qa_github_action_img
+      
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -39,16 +43,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
       
-      - name: Upload Docker image to S3
+      - name: Upload .tar file to S3
         run: |
-          aws s3 cp docker://dexterding/qa_github_action_img:latest s3://elasticbeanstalk-eu-west-2-135439077495/qa_react_front_git_doc
+          aws s3 cp image.tar s3://elasticbeanstalk-eu-west-2-135439077495/qa_react_front_git_doc/image.tar
 
       - name: Deploy to Elastic Beanstalk
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name qa_react_front_git_doc \
             --version-label test1 \
-            --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_react_front_git_doc
+            --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_react_front_git_doc/image.tar
           aws elasticbeanstalk update-environment \
             --application-name qa_react_front_git_doc \
             --environment-name Qafrontendreact-env \
