@@ -41,6 +41,11 @@ jobs:
         run: |
           docker save -o image.tar ${{ secrets.DOCKER_USERNAME }}/qa_github_action_img:latest
           
+          
+      - name: Upload .tar file to S3
+        run: |
+          aws s3 cp image.tar s3://elasticbeanstalk-eu-west-2-135439077495/qa_react_front_git_doc/image.tar
+
       - name: Deploy to Elastic Beanstalk
         run: |
           aws elasticbeanstalk create-application-version \
