@@ -29,7 +29,33 @@ jobs:
 
       - name: Push Docker image to registry
         run: docker push ${{ secrets.DOCKER_USERNAME }}/qa_github_action_img:latest
-      
+  
+  prepare-and-upload-dockerrun-file:
+    needs: build-and-push-docker-image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Prepare Dockerrun.aws.json
+        run: |
+          echo '{
+            "AWSEBDockerrunVersion": "1",
+            "Image": {
+              "Name": "${{ secrets.DOCKER_USERNAME }}/qa_github_action_img:latest",
+              "Update": "true"
+            },
+            "Ports": [
+              {
+                "ContainerPort": "80"
+              }
+            ]
+          }' > Dockerrun.aws.json
+
+      - name: Zip Dockerrun.aws.json
+        run: zip myapp.zip Dockerrun.aws.json
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -37,14 +63,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
       
-      - name: Save Docker image as .tar file
+      - name: Upload zip file to S3
         run: |
-          docker save -o image.tar ${{ secrets.DOCKER_USERNAME }}/qa_github_action_img:latest
-          
-          
-      - name: Upload .tar file to S3
-        run: |
-          aws s3 cp image.tar s3://elasticbeanstalk-eu-west-2-135439077495/qa_react_front_git_doc/image.tar
+          aws s3 cp myapp.zip s3://elasticbeanstalk-eu-west-2-135439077495/qa_react_front_git_doc/myapp.zip
+  
   deploy:
     needs: build-docker-image-and-send-to-amazonS3
     runs-on: ubuntu-latest
@@ -58,13 +80,15 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
+      
+      
       - name: Deploy to Elastic Beanstalk
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name qa_front_end_react \
-            --version-label test2 \
-            --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_react_front_git_doc/image.tar
+            --version-label drawsjs \
+            --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_react_front_git_doc/myapp.zip
           aws elasticbeanstalk update-environment \
             --application-name qa_front_end_react \
             --environment-name Qafrontendreact-env \
-            --version-label test2
+            --version-label drawsjs
