@@ -69,40 +69,45 @@ const Participant = (props) => {
 
 
     if (background[1] && background[2]&& background[3]&&background[4]&&background[5]&&email) {
-      // 
-      // if(props.totalConversations===props.feedBackSubmitCount 
-        // && 
-        // props.totalQuestions===props.answerSubmitCount){
-      const backgroundData = {
+      
+      if(props.totalConversations===props.feedBackSubmitCount 
+        && 
+        props.totalQuestions===props.answerSubmitCount){
+
+          const backgroundData = {
         user_id: props.uniqueId, // replace with actual user_id
         background1: background[1],
         background2: background[2],
         background3: background[3],
         background4: background[4],
         background5: background[5],
-        email: email
-      };   
-      console.log(backgroundData);
-      setIsSubmitted(true);
-      
-      axios.post('http://127.0.0.1:8000/api/user_background/', backgroundData)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.error('There has been a problem with your axios operation:', error);
-        });
-// 
+        email: email,
+        elapsedSeconds: props.elapsedSeconds,
+        totalPlayTime: props.totalPlayTime,
+        isSerious: props.elapsedSeconds >= props.totalPlayTime
+        };   
+        console.log(backgroundData);
+        setIsSubmitted(true);
+        
+        axios.post('http://127.0.0.1:8000/api/user_background/', backgroundData)
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => {
+            console.error('There has been a problem with your axios operation:', error);
+          });
+        
+
+
+        }
+      else{
+        alert('Please complete all the questions and feedback.');
+      }
+       
+    } 
+    else {
+      alert('Please complete all the background questions below above.');
     }
-    // else{
-      // alert('Please complete all the questions and feedback.');
-    // }
-      // 
-// 
-// 
-    // } else {
-      // alert('Please complete all the question below first.');
-    // }
   };
 
   return (

@@ -77,14 +77,14 @@ function App() {
       const timer = setTimeout(() => {
         const currentTime = new Date().getTime();
         const timeDiff = currentTime - startTime;
-        setElapsedTime(timeDiff);
-        const elapsedSeconds = Math.floor(elapsedTime / 1000);
+        setElapsedTime(timeDiff/ 1000);
+        // const elapsedSeconds = Math.floor(elapsedTime / 1000);
         
         console.log("现在时间 " + new Date(currentTime).toISOString()); // 将当前时间转换为可读的日期字符串
         console.log("开始时间 " + new Date(startTime).toISOString()); // 将开始时间转换为可读的日期字符串
-        console.log("elapsedTime " + elapsedSeconds + " 秒");
+        console.log("elapsedTime " + elapsedTime + " 秒");
         console.log("播放时间 " + totalPlayTime + " 秒");
-        if (elapsedSeconds >= totalPlayTime) {
+        if (elapsedTime >= totalPlayTime) {
           clearTimeout(timer);
           console.log("已超过所有播放时间");
         }
@@ -108,13 +108,6 @@ function App() {
     //用useEffect钩子来监听状态的变化。在useEffect中，添加对应状态的依赖项，一旦状态发生变化，useEffect内的代码将被执行。
   }
 
-  const handleSubmit = () => {
-    if (answerSubmitCount === totalQuestions && feedBackSubmitCount === totalConversations) {
-      console.log("All questions and conversations have been submitted.");
-    } else {
-      console.log("Please submit all questions and conversations.");
-    }
-  };
 
   const totalPlayTimeHandler =(newTime)=>{
     setTotalPlayTime(prevTime => prevTime + newTime);//update total play time
@@ -177,6 +170,8 @@ function App() {
         totalQuestions     ={totalQuestions}
         answerSubmitCount  ={answerSubmitCount}
         feedBackSubmitCount={feedBackSubmitCount}
+        totalPlayTime={totalPlayTime}
+        elapsedSeconds={elapsedTime}
       ></Participant>
     </div>
   );
