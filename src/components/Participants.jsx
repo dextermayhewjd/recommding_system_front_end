@@ -38,8 +38,8 @@ const Participant = (props) => {
       { text: 'University of Bristol Law School', value: 13 },
     ] },
     { id: 5, text: 'Question 5: Does your study require lots of reading English Corpus ', options: [
-      { text: 'Yes', value: true },
-      { text: 'No', value: false },
+      { text: 'Yes', value: 1 },
+      { text: 'No', value: 0 },
     ] },
   ];
 
@@ -69,10 +69,10 @@ const Participant = (props) => {
 
 
     if (background[1] && background[2]&& background[3]&&background[4]&&background[5]&&email) {
-      
-      if(props.totalConversations===props.feedBackSubmitCount 
-        && 
-        props.totalQuestions===props.answerSubmitCount){
+      // 
+      // if(props.totalConversations===props.feedBackSubmitCount 
+        // && 
+        // props.totalQuestions===props.answerSubmitCount){
       const backgroundData = {
         user_id: props.uniqueId, // replace with actual user_id
         background1: background[1],
@@ -84,22 +84,25 @@ const Participant = (props) => {
       };   
       console.log(backgroundData);
       setIsSubmitted(true);
-    }else{
-      alert('Please complete all the questions and feedback.');
-    }
       
-
-      // axios.post('http://127.0.0.1:8000/api/user_background/', backgroundData)
-      //   .then(response => {
-      //     console.log(response);
-      //   })
-      //   .catch(error => {
-      //     console.error('There has been a problem with your axios operation:', error);
-      //   });)
-
-    } else {
-      alert('Please complete all the question below first.');
+      axios.post('http://127.0.0.1:8000/api/user_background/', backgroundData)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.error('There has been a problem with your axios operation:', error);
+        });
+// 
     }
+    // else{
+      // alert('Please complete all the questions and feedback.');
+    // }
+      // 
+// 
+// 
+    // } else {
+      // alert('Please complete all the question below first.');
+    // }
   };
 
   return (
