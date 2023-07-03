@@ -86,7 +86,7 @@ jobs:
               aws elasticbeanstalk create-application-version \
                 --application-name qa_front_end_react \
                 --version-label ${{ github.sha }} \
-                --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_front_end/myapp.zip
+                --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_react_front_git_doc/myapp.zip
       
               aws elasticbeanstalk update-environment \
                 --application-name qa_front_end_react \
