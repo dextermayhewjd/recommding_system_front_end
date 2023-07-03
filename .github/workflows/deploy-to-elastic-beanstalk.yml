@@ -25,10 +25,10 @@ jobs:
           
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/qa_front_end:${{ github.sha }} .
 
       - name: Push Docker image to registry
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qa_front_end:${{ github.sha }}
   
   prepare-and-upload-dockerrun-file:
     needs: build-and-push-docker-image
@@ -43,7 +43,7 @@ jobs:
           echo '{
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:${{ github.sha }}",
+              "Name": "${{ secrets.DOCKERHUB_USERNAME }}/qa_front_end:${{ github.sha }}",
               "Update": "true"
             },
             "Ports": [
@@ -65,7 +65,7 @@ jobs:
       
       - name: Upload zip file to S3
         run: |
-          aws s3 cp myapp.zip s3://elasticbeanstalk-eu-west-2-135439077495/qa_react_front_git_doc/myapp.zip
+          aws s3 cp myapp.zip s3://elasticbeanstalk-eu-west-2-135439077495/qa_front_end/myapp.zip
   
       deploy:
         needs: prepare-and-upload-dockerrun-file
@@ -86,7 +86,7 @@ jobs:
               aws elasticbeanstalk create-application-version \
                 --application-name qa_front_end_react \
                 --version-label ${{ github.sha }} \
-                --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_react_front_git_doc/myapp.zip
+                --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_front_end/myapp.zip
       
               aws elasticbeanstalk update-environment \
                 --application-name qa_front_end_react \
