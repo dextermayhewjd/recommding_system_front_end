@@ -25,10 +25,10 @@ jobs:
           
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/qa_front_end:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/full_stack_front_end:${{ github.sha }} .
 
       - name: Push Docker image to registry
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qa_front_end:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/full_stack_front_end:${{ github.sha }}
   
   prepare-and-upload-dockerrun-file:
     needs: build-and-push-docker-image
@@ -43,7 +43,7 @@ jobs:
           echo '{
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ secrets.DOCKERHUB_USERNAME }}/qa_front_end:${{ github.sha }}",
+              "Name": "${{ secrets.DOCKERHUB_USERNAME }}/full_stack_front_end:${{ github.sha }}",
               "Update": "true"
             },
             "Ports": [
@@ -65,7 +65,7 @@ jobs:
       
       - name: Upload zip file to S3
         run: |
-          aws s3 cp myapp.zip s3://elasticbeanstalk-eu-west-2-135439077495/qa_front_end/myapp.zip
+          aws s3 cp myapp.zip s3://elasticbeanstalk-eu-west-2-135439077495/full_stack_front_end/myapp.zip
   
   deploy:
     needs: prepare-and-upload-dockerrun-file
@@ -73,23 +73,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+  
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
-
+  
       - name: Deploy to Elastic Beanstalk
         run: |
           aws elasticbeanstalk create-application-version \
-            --application-name qa_front_end_react \
+            --application-name full_stack_front_End \
             --version-label ${{ github.sha }} \
-            --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_front_end/myapp.zip
-
+            --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=full_stack_front_end/myapp.zip
+  
           aws elasticbeanstalk update-environment \
-            --application-name qa_front_end_react \
-            --environment-name Qafrontendreact-env \
+            --application-name full_stack_front_End \
+            --environment-name FullstackfrontEnd-env \
             --version-label ${{ github.sha }}
           

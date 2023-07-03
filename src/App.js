@@ -25,8 +25,8 @@ function App() {
   const [totalPlayTime, setTotalPlayTime] = useState(0); // 新增总的播放时间状态
 
   
-  const url_for_getting_data = `http://qabackend-env.eba-g3tptmme.eu-west-2.elasticbeanstalk.com/api/conversations/eighitConversations/`;
-  const urlForGettingUniqueId = `http://qabackend-env.eba-g3tptmme.eu-west-2.elasticbeanstalk.com/generate_unique_id/`; // 替换为实际的后端URL
+  const url_for_getting_data = `http://server.eu-west-2.elasticbeanstalk.com/api/conversations/eighitConversations/`;
+  const urlForGettingUniqueId = `http://server.eu-west-2.elasticbeanstalk.com/generate_unique_id/`; // 替换为实际的后端URL
   useEffect(() => {
       // API url
 

@@ -27,7 +27,7 @@ const handleSubmit = (event) => {
   if (feedback[1] && feedback[2]) {
     
     // Here you would call your API to submit the feedback
-    axios.post('http://qabackend-env.eba-g3tptmme.eu-west-2.elasticbeanstalk.com/api/user_feedback/', {
+    axios.post('http://server.eu-west-2.elasticbeanstalk.com/api/user_feedback/', {
       user_id: props.uniqueId, // replace with actual user_id
       conversation_id: props.conversationId,
       feedback1: feedback[1],
