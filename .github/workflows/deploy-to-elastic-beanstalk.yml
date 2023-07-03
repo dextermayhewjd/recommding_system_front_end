@@ -23,12 +23,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           
-      - name: Build Docker image
+      - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:latest .
-
-      - name: Push Docker image to registry
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:${{ github.sha }} .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:${{ github.sha }}
   
   prepare-and-upload-dockerrun-file:
     needs: build-and-push-docker-image
@@ -43,7 +41,7 @@ jobs:
           echo '{
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:latest",
+              "Name": "${{ secrets.DOCKERHUB_USERNAME }}/qa_github_action_img:${{ github.sha }}",
               "Update": "true"
             },
             "Ports": [
@@ -81,18 +79,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
       
-      - name: Generate version label
-        id: generate-version-label
-        run: echo "VERSION_LABEL=version-${{ github.sha }}" >> $GITHUB_ENV
-
-      
       - name: Deploy to Elastic Beanstalk
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name qa_front_end_react \
-            --version-label latest \
+            --version-label ${{ github.sha }} \
             --source-bundle S3Bucket=elasticbeanstalk-eu-west-2-135439077495,S3Key=qa_react_front_git_doc/myapp.zip
           aws elasticbeanstalk update-environment \
             --application-name qa_front_end_react \
             --environment-name Qafrontendreact-env \
-            --version-label latest
+            --version-label ${{ github.sha }}
