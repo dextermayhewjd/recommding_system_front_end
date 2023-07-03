@@ -31,7 +31,7 @@ const Question=(props)=>{
       setIsSubmitted(true);
       props.onChangeAnswerSumbitCount();
           // Here you would call your API to submit the feedback
-      axios.post('http://127.0.0.1:8000/api/user_answer_for_question/',answerData)
+      axios.post('http://qabackend-env.eba-g3tptmme.eu-west-2.elasticbeanstalk.com/api/user_answer_for_question/',answerData)
       .then(response => {
         console.log(response);
         // setFeedback(""); // clear the feedback field
