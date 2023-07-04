@@ -115,8 +115,10 @@ function App() {
   }
 
   const timeStartHandler = () =>{
-    setIsTimerStarted(true);
-    setStartTime(new Date().getTime());
+    if (!isTimerStarted) {
+      setIsTimerStarted(true);
+      setStartTime(new Date().getTime());
+    }// if is timer is already started then there is no need to set the start time again 
   }
 
 
