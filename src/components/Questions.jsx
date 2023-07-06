@@ -1,6 +1,7 @@
 import './Question.css'; // 导入CSS文件
 import { useState } from 'react';
 import axios from 'axios';
+import { submitAnswer } from './apiService';
 
 const Question=(props)=>{
 
@@ -31,15 +32,18 @@ const Question=(props)=>{
       setIsSubmitted(true);
       props.onChangeAnswerSumbitCount();
           // Here you would call your API to submit the feedback
-      axios.post('http://server.eu-west-2.elasticbeanstalk.com/api/user_answer_for_question/',answerData)
-      .then(response => {
-        console.log(response);
-        // setFeedback(""); // clear the feedback field
+      // axios.post('http://server.eu-west-2.elasticbeanstalk.com/api/user_answer_for_question/',answerData)
+      // .then(response => {
+      //   console.log(response);
+      // })
+      submitAnswer(answerData)
+      .then(data => {
+        console.log(data);
       })
       .catch(error => {
         console.error('There has been a problem with your axios operation:', error);
       });
-      // 将answerData发送给后端，可以使用fetch、axios等方法发送HTTP请求
+
     }else{
         alert('please choose an option first ');
       };
