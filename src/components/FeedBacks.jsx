@@ -2,6 +2,8 @@
 import axios from 'axios';
 import { useState } from 'react';
 import './FeedBack.css'
+import { submitFeedback } from './apiService';
+
 const FeedBack =(props)=>{
 
 const questions = [
@@ -26,17 +28,27 @@ const handleSubmit = (event) => {
   console.log(feedback);
   if (feedback[1] && feedback[2]) {
     
+    const feedbackData = {
+        user_id: props.uniqueId, // replace with actual user_id
+        conversation_id: props.conversationId,
+        feedback1: feedback[1],
+        feedback2: feedback[2]
+      }
     // Here you would call your API to submit the feedback
-    axios.post('http://server.eu-west-2.elasticbeanstalk.com/api/user_feedback/', {
-      user_id: props.uniqueId, // replace with actual user_id
-      conversation_id: props.conversationId,
-      feedback1: feedback[1],
-      feedback2: feedback[2]
-    })
-    .then(response => {
-      console.log(response);
-      // setFeedback(""); // clear the feedback field
-    })
+    submitFeedback(feedbackData)
+      .then(data => {
+        console.log(data);
+      })
+    // axios.post('http://server.eu-west-2.elasticbeanstalk.com/api/user_feedback/', {
+    //   user_id: props.uniqueId, // replace with actual user_id
+    //   conversation_id: props.conversationId,
+    //   feedback1: feedback[1],
+    //   feedback2: feedback[2]
+    // })
+    // .then(response => {
+    //   console.log(response);
+    //   // setFeedback(""); // clear the feedback field
+    // })
     .catch(error => {
       console.error('There has been a problem with your axios operation:', error);
     });

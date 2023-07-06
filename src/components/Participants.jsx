@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { submitBackground } from './apiService';
 
 const Participant = (props) => {
   const questions = [
@@ -89,14 +89,20 @@ const Participant = (props) => {
         console.log(backgroundData);
         setIsSubmitted(true);
         
-        axios.post('http://server.eu-west-2.elasticbeanstalk.com/api/user_background/', backgroundData)
-          .then(response => {
-            console.log(response);
-          })
-          .catch(error => {
-            console.error('There has been a problem with your axios operation:', error);
-          });
-        
+        // axios.post('http://server.eu-west-2.elasticbeanstalk.com/api/user_background/', backgroundData)
+        //   .then(response => {
+        //     console.log(response);
+        //   })
+        //   .catch(error => {
+        //     console.error('There has been a problem with your axios operation:', error);
+        //   });
+        submitBackground(backgroundData)
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Error submitting background:', error);
+        });
 
 
         }

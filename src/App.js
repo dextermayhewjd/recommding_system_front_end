@@ -9,6 +9,8 @@ import Participant from "./components/Participants";
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { getConversations,generateUniqueId } from "./components/apiService";
+
 
 function App() {
   const [conversation, setConversation] = useState([]);
@@ -25,23 +27,32 @@ function App() {
   const [totalPlayTime, setTotalPlayTime] = useState(0); // 新增总的播放时间状态
 
   
-  const url_for_getting_data = `http://server.eu-west-2.elasticbeanstalk.com/api/conversations/eighitConversations/`;
-  const urlForGettingUniqueId = `http://server.eu-west-2.elasticbeanstalk.com/generate_unique_id/`; // 替换为实际的后端URL
+  // const url_for_getting_data = `http://server.eu-west-2.elasticbeanstalk.com/api/conversations/eighitConversations/`;
+  // const urlForGettingUniqueId = `http://server.eu-west-2.elasticbeanstalk.com/generate_unique_id/`; // 替换为实际的后端URL
   useEffect(() => {
       // API url
 
       // Make a GET request 
       // 获取对话数据
-      axios.get(url_for_getting_data)
-      .then(response => {
-          console.log(response.data);
-          setConversation(response.data); // Wrap the response data in an array // Set state here
-          setTotalConversations(response.data.length);// by getting the length of the data 
-          setTotalQuestions(response.data.reduce((total,dialogue) => total + dialogue.questions.length,0))
-        })
-      .catch(error => {
-          console.error('There has been a problem with your axios operation:', error);
-      });
+      // axios.get(url_for_getting_data)
+      // .then(response => {
+      //     console.log(response.data);
+      //     setConversation(response.data); // Wrap the response data in an array // Set state here
+      //     setTotalConversations(response.data.length);// by getting the length of the data 
+      //     setTotalQuestions(response.data.reduce((total,dialogue) => total + dialogue.questions.length,0))
+      //   })
+      // .catch(error => {
+      //     console.error('There has been a problem with your axios operation:', error);
+      // });
+      getConversations()
+      .then(data =>{
+          console.log(data);
+          setConversation(data);
+          setTotalConversations(data.length);
+          setTotalQuestions(data.reduce((total,dialogue) => total + dialogue.questions.length,0))
+      }).catch(error => {
+            console.error('There has been a problem with your axios operation:', error);
+        });
  
 
     // 获取唯一ID
@@ -50,15 +61,24 @@ function App() {
       setUniqueId(existingUniqueId);
       console.log('already got'+{existingUniqueId})
     }else{
-    axios.get(urlForGettingUniqueId)
-      .then(response => {
-        console.log(response.data);
-        setUniqueId(response.data.unique_id);
-        Cookies.set('uniqueId', response.data.unique_id);
-      })
-      .catch(error => {
-        console.error('Error retrieving unique ID:', error);
-      });
+    // axios.get(urlForGettingUniqueId)
+    //   .then(response => {
+    //     console.log(response.data);
+    //     setUniqueId(response.data.unique_id);
+    //     Cookies.set('uniqueId', response.data.unique_id);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error retrieving unique ID:', error);
+    //   });
+        generateUniqueId()
+        .then(data => {
+          console.log(data);
+          setUniqueId(data.uniqueId);
+          Cookies.set('uniqueId', data.unique_id);
+        })
+        .catch(error => {
+          console.error('Error retrieving unique ID:', error);
+        });
 
     }
   }, []); // [] means run once after initial render
@@ -84,7 +104,8 @@ function App() {
         console.log("开始时间 " + new Date(startTime).toISOString()); // 将开始时间转换为可读的日期字符串
         console.log("elapsedTime " + elapsedTime + " 秒");
         console.log("播放时间 " + totalPlayTime + " 秒");
-        if (elapsedTime >= totalPlayTime) {
+        if (elapsedTime >= totalPlayTime + 500) {
+          // to give user enough time to fufill all the places 
           clearTimeout(timer);
           console.log("已超过所有播放时间");
         }
