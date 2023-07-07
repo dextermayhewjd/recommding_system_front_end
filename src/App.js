@@ -4,7 +4,6 @@ import FeedBack from "./components/FeedBacks";
 import AudioPlayer from "./components/AudioPlayer";
 import Cookies from "js-cookie";
 import Participant from "./components/Participants";
-import './components/app.css'
 
 import React, { useEffect, useState } from 'react';
 import { getConversations,generateUniqueId } from "./components/apiService";
