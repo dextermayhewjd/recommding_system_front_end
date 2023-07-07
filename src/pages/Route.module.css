@@ -1,0 +1,56 @@
+/* Route.module.css */
+
+.route-body {
+  background-color: #720a36;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.route-container {
+  max-width: 800px;
+  padding: 20px;
+  text-align: center;
+}
+
+.route-heading {
+  font-size: 36px;
+  color: #fff;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  word-wrap: break-word;
+  flex: 1;
+}
+
+.route-paragraph {
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  word-wrap: break-word;
+  flex: 1;
+}
+
+.route-next-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ffcc00;
+  color: #720a36;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.route-next-button:hover {
+  background-color: #d9b400;
+}

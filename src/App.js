@@ -1,18 +1,20 @@
-import Introductions from "./components/Introductions";
-import './components/App.css';
-import './components/Question.css'; // 导入CSS文件
+
 import Question from "./components/Questions";
 import FeedBack from "./components/FeedBacks";
 import AudioPlayer from "./components/AudioPlayer";
 import Cookies from "js-cookie";
 import Participant from "./components/Participants";
-
+import './components/app.css'
 
 import React, { useEffect, useState } from 'react';
 import { getConversations,generateUniqueId } from "./components/apiService";
 
-
 function App() {
+
+
+
+
+
   const [conversation, setConversation] = useState([]);
   const [uniqueId, setUniqueId] = useState('');
   const [audioPlayedCount, setAudioPlayedCount] = useState(0); // 添加计数器
@@ -74,7 +76,7 @@ function App() {
         .then(data => {
           console.log(data);
           setUniqueId(data.uniqueId);
-          Cookies.set('uniqueId', data.unique_id);
+          Cookies.set('uniqueId', data.unique_id, { sameSite: 'None', secure: true });
         })
         .catch(error => {
           console.error('Error retrieving unique ID:', error);
@@ -154,8 +156,7 @@ function App() {
   }
 
   return (
-    <div>
-      <Introductions></Introductions>
+    <div >
       {conversation.map((dialogue, index) => (
         <div key={index}>
           <h1>These questions are from {dialogue.id}</h1>
