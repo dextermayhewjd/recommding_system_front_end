@@ -75,7 +75,7 @@ function App() {
         .then(data => {
           console.log(data);
           setUniqueId(data.unique_id);
-          Cookies.set('uniqueId', data.unique_id, { sameSite: 'None', secure: true });
+          Cookies.set('uniqueId', data.unique_id, { sameSite: 'None', secure: true,  domain: 'http://listeningtask.eu-west-2.elasticbeanstalk.com' });
         })
         .catch(error => {
           console.error('Error retrieving unique ID:', error);
