@@ -17,7 +17,7 @@ export async function getConversations() {
 export async function generateUniqueId() {
   try {
     const response = await axios.get(`${API_BASE_URL}/generate_unique_id/`);
-    return response.data.unique_id;
+    return response.data;
   } catch (error) {
     console.error('Error retrieving unique ID:', error);
     throw error;
