@@ -74,7 +74,7 @@ function App() {
         generateUniqueId()
         .then(data => {
           console.log(data);
-          setUniqueId(data.uniqueId);
+          setUniqueId(data.unique_id);
           Cookies.set('uniqueId', data.unique_id, { sameSite: 'None', secure: true });
         })
         .catch(error => {
