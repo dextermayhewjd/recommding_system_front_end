@@ -181,14 +181,14 @@ function App() {
           ))}
           <FeedBack 
           conversationId={dialogue.id} 
-          uniqueId={Cookies.get('uniqueId')}
+          uniqueId={uniqueId}
           onChangeFeedbackSumbitCount = {countFeedbackHandler}
           />
         </div>
       ))}
 
       <Participant
-        uniqueId={Cookies.get('uniqueId')}
+        uniqueId={uniqueId}
         totalConversations ={totalConversations}
         totalQuestions     ={totalQuestions}
         answerSubmitCount  ={answerSubmitCount}
